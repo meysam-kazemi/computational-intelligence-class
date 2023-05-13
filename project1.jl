@@ -1,5 +1,5 @@
 # Import librarie
-using Plots # Plots library
+import Plots # Plots library
 ## SEED
 import Random
 Random.seed!(1234)
@@ -31,10 +31,16 @@ for (i,row) in enumerate(eachrow(X))
     Y[i,:] = W*row;
 end
 
-Plots.scatter(Y[:,1],Y[:,2],Y[:,3],color=:red,label = :"y")
-Plots.scatter!(X[:,1],X[:,2],X[:,3],color=:blue,label="x")
+# build an animated Gif 
 
-
+@gif for i in range(0, stop = 2π, length = n_samples)
+    Plots.scatter(X[:,1],X[:,2],X[:,3],color=:blue,label="X",
+    camera = camera = (10 * (1 + cos(i)), 10 * (1 + cos(i))))
+    Plots.scatter!(Y[:,1],Y[:,2],Y[:,3],color=:red,label = :"Y")
+    Plots.xlabel!("X1")
+    Plots.ylabel!("X2")
+    Plots.zlabel!("x3")
+end
 
 
 
