@@ -21,3 +21,12 @@ end
 
 
 
+# Build a model with random weights
+W = 0.001 * rand(3,3);
+Y = zeros(1000,3);
+for (i,row) in enumerate(eachrow(X))
+    Y[i,:] = W*row;
+end
+
+
+
