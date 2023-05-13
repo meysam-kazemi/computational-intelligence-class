@@ -43,4 +43,14 @@ end
 end
 
 
+# Split Dataset
+function split_data(data,train_size)
+    for i in 1:train_size
+        idx = collect(axes(data,1));
+        Random.shuffle!(idx);
+        train = data[idx[1:train_size]];
+        test = data[train_size+1:end];
+        return train,test
+end
+
 
