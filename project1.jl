@@ -83,3 +83,13 @@ println(sum(ytrain.-xtrain).^2)
 #     Plots.zlabel!("x3")
 # end
 
+
+# Test
+ytest = zeros(size(xtest,1),3);
+Plots.scatter(1,title="TEST DATASET",
+            xlabel="X1",ylabel="X2",zlabel="X3",
+            camera=(30,45),legend=false)
+Plots.@gif for i in range(1,stop=size(xtest,1),length=size(xtest,1))
+    y = W*xtest[Int(i),:];
+    Plots.scatter!(y[1,:],y[2,:],y[3,:],color=:green)
+end
