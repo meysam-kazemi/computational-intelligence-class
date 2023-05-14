@@ -16,7 +16,7 @@ function Generate_data(a,b,d,e)
     return data
 end
 
-n_samples = 200
+n_samples = 1000
 X = zeros(Float64,n_samples,3); # Save data in X
 for i in 1:n_samples
     X[i,:] = Generate_data(a,b,d,e);
@@ -94,12 +94,21 @@ println(sum(ytrain.-xtrain).^2)
 # end
 
 
-# generate new points(outside the plane)
-a , b , d , e = -3 , 16 , -4 , 5;
-n_samples = 400
-X = zeros(Float64,n_samples,3); # Save data in X
+# generate new points(outside of the plane)
+a , b , d , e = rand(-5:10,4)
+n_samples = 200
+Xnew = zeros(Float64,n_samples,3); # Save data in X
 for i in 1:n_samples
-    X[i,:] = Generate_data(a,b,d,e);
+    Xnew[i,:] = Generate_data(a,b,d,e);
 end
 
 
+Plots.scatter(X[:,1],X[:,2],X[:,3],color=:yellow,label="plane"
+            ,title="outside of the plane",xlabel="X1",ylabel="X2",
+            zlabel="x3",camera=(10,40),legend=false)
+Plots.@gif for i in 1:1:n_samples
+    Plots.scatter!(Xnew[i,1,:],Xnew[i,2,:],Xnew[i,3,:],color=:blue,label="outside-data")
+    y = W*Xnew[i,:];
+    Plots.scatter!(y[1,:],y[2,:],y[3,:],color=:green,label="outside-predict",
+                camera=((10 * (1 + cos(i*2π/n_samples))),20))
+end
