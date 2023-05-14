@@ -103,14 +103,25 @@ for i in 1:n_samples
 end
 
 # Plot
-Plots.scatter(X[:,1],X[:,2],X[:,3],color=:yellow,label="plane"
+
+function build_plane(start,step,stop)
+    x = collect(start:step:stop);
+    y = collect(start:step:stop);
+    Random.shuffle!(y);
+    z = @. -(5x + 6y) / 9;
+    return [x y z]
+end
+plane = build_plane(-3,0.05,3)
+
+
+Plots.scatter(plane[:,1],plane[:,2],plane[:,3],color=:yellow,label="plane"
             ,title="outside of the plane",xlabel="X1",ylabel="X2",
-            zlabel="x3",camera=(10,40),legend=false,markersize=5)
+            zlabel="x3",camera=(10,40),legend=false,markersize=2,markerstrokewidth=0)
 Plots.@gif for i in 1:1:n_samples
     x = Xnew[i,:];
     
     Plots.scatter!(x[1,:],x[2,:],x[3,:],color=:blue,label="outside-data",markersize=5)
     y = W*Xnew[i,:];
     Plots.scatter!(y[1,:],y[2,:],y[3,:],color=:green,label="outside-predict",
-                camera=((10 * (1 + cos(i*2π/n_samples))),20),markersize=5)
+                camera=((20 * (1 - cos(i*2π/n_samples))),20),markersize=5)
 end
