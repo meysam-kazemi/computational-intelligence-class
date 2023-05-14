@@ -102,13 +102,15 @@ for i in 1:n_samples
     Xnew[i,:] = Generate_data(a,b,d,e);
 end
 
-
+# Plot
 Plots.scatter(X[:,1],X[:,2],X[:,3],color=:yellow,label="plane"
             ,title="outside of the plane",xlabel="X1",ylabel="X2",
-            zlabel="x3",camera=(10,40),legend=false)
+            zlabel="x3",camera=(10,40),legend=false,markersize=5)
 Plots.@gif for i in 1:1:n_samples
-    Plots.scatter!(Xnew[i,1,:],Xnew[i,2,:],Xnew[i,3,:],color=:blue,label="outside-data")
+    x = Xnew[i,:];
+    
+    Plots.scatter!(x[1,:],x[2,:],x[3,:],color=:blue,label="outside-data",markersize=5)
     y = W*Xnew[i,:];
     Plots.scatter!(y[1,:],y[2,:],y[3,:],color=:green,label="outside-predict",
-                camera=((10 * (1 + cos(i*2π/n_samples))),20))
+                camera=((10 * (1 + cos(i*2π/n_samples))),20),markersize=5)
 end
