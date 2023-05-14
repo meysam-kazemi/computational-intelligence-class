@@ -31,17 +31,17 @@ for (i,row) in enumerate(eachrow(X))
     Y[i,:] = W*row;
 end
 
-# build an animated Gif 
 
-Plots.@gif for i in range(0, stop = 2π, length = n_samples)
-    Plots.scatter(X[:,1],X[:,2],X[:,3],color=:blue,label="X",
-    camera = camera = (10 * (1 + cos(i)), 10 * (1 + cos(i))))
-    Plots.scatter!(Y[:,1],Y[:,2],Y[:,3],color=:red,label = :"Y")
-    Plots.title!("BEFORE TRAINING")
-    Plots.xlabel!("X1")
-    Plots.ylabel!("X2")
-    Plots.zlabel!("x3")
-end
+# # build an animated Gif 
+# Plots.@gif for i in range(0, stop = 2π, length = n_samples)
+#     Plots.scatter(X[:,1],X[:,2],X[:,3],color=:blue,label="X",
+#     camera = camera = (10 * (1 + cos(i)), 10 * (1 + cos(i))))
+#     Plots.scatter!(Y[:,1],Y[:,2],Y[:,3],color=:red,label = :"Y")
+#     Plots.title!("BEFORE TRAINING")
+#     Plots.xlabel!("X1")
+#     Plots.ylabel!("X2")
+#     Plots.zlabel!("x3")
+# end
 
 
 # Split Dataset
@@ -56,18 +56,30 @@ end
 xtrain,xtest  = split_data(X,Int(n_samples*0.8));
 
 # Train
-epochs = 1000;
+epochs = 10000;
+lr = 0.0001;
 
 W = 0.001*rand(3,3);
 ytrain = zeros(size(xtrain,1),3);
-for epoch = 1:epochs
+@time for epoch = 1:epochs
     for i = 1:size(xtrain,1)
         global W
         ytrain[i,:] = W*xtrain[i,:];
-        W = W .+ (0.001*xtrain[i,:]' * (xtrain[i,:].-ytrain[i,:]));
+        W = W .+ ((xtrain[i,:].-ytrain[i,:]) * lr*xtrain[i,:]');
     end
 end
 
+print("loss: ")
+println(sum(ytrain.-xtrain).^2)
 
+# # build an animated Gif 
+# Plots.@gif for i in range(0, stop = 2π, length = n_samples)
+#     Plots.scatter(xtrain[:,1],xtrain[:,2],xtrain[:,3],color=:blue,label="dataset",alpha=0.5,
+#     camera = camera = (10 * (1 + cos(i)*2), 10 * (1 + cos(i))))
+#     Plots.scatter!(ytrain[:,1],ytrain[:,2],ytrain[:,3],color=:red,label = :"predict",alpha=0.5)
+#     Plots.title!("AFTER TRAINING")
+#     Plots.xlabel!("X1")
+#     Plots.ylabel!("X2")
+#     Plots.zlabel!("x3")
+# end
 
-println("===============")
