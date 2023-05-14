@@ -33,7 +33,7 @@ end
 
 # build an animated Gif 
 
-@gif for i in range(0, stop = 2π, length = n_samples)
+Plots.@gif for i in range(0, stop = 2π, length = n_samples)
     Plots.scatter(X[:,1],X[:,2],X[:,3],color=:blue,label="X",
     camera = camera = (10 * (1 + cos(i)), 10 * (1 + cos(i))))
     Plots.scatter!(Y[:,1],Y[:,2],Y[:,3],color=:red,label = :"Y")
