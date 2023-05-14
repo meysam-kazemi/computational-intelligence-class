@@ -33,24 +33,31 @@ end
 
 # build an animated Gif 
 
-@gif for i in range(0, stop = 2π, length = n_samples)
-    Plots.scatter(X[:,1],X[:,2],X[:,3],color=:blue,label="X",
-    camera = camera = (10 * (1 + cos(i)), 10 * (1 + cos(i))))
-    Plots.scatter!(Y[:,1],Y[:,2],Y[:,3],color=:red,label = :"Y")
-    Plots.xlabel!("X1")
-    Plots.ylabel!("X2")
-    Plots.zlabel!("x3")
-end
+# @gif for i in range(0, stop = 2π, length = n_samples)
+#     Plots.scatter(X[:,1],X[:,2],X[:,3],color=:blue,label="X",
+#     camera = camera = (10 * (1 + cos(i)), 10 * (1 + cos(i))))
+#     Plots.scatter!(Y[:,1],Y[:,2],Y[:,3],color=:red,label = :"Y")
+#     Plots.xlabel!("X1")
+#     Plots.ylabel!("X2")
+#     Plots.zlabel!("x3")
+# end
 
 
 # Split Dataset
 function split_data(data,train_size)
-    for i in 1:train_size
-        idx = collect(axes(data,1));
-        Random.shuffle!(idx);
-        train = data[idx[1:train_size]];
-        test = data[train_size+1:end];
-        return train,test
+    x,y = data;
+    idx = collect(axes(x,1));
+    Random.shuffle!(idx);
+    xtrain = x[idx[1:train_size],:];
+    ytrain = y[idx[1:train_size],:];
+    xtest = x[idx[train_size+1:end],:];
+    ytest = y[idx[train_size+1:end],:];
+    return (xtrain,xtest),(ytrain,ytest);
 end
 
+(xtrain,xtest) , (ytrain,ytest) = split_data((X,Y),Int(n_samples*0.8));
 
+
+
+
+println("===============")
