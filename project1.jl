@@ -84,12 +84,22 @@ println(sum(ytrain.-xtrain).^2)
 # end
 
 
-# Test
-ytest = zeros(size(xtest,1),3);
-Plots.scatter(1,title="TEST DATASET",
-            xlabel="X1",ylabel="X2",zlabel="X3",
-            camera=(30,45),legend=false)
-Plots.@gif for i in range(1,stop=size(xtest,1),length=size(xtest,1))
-    y = W*xtest[Int(i),:];
-    Plots.scatter!(y[1,:],y[2,:],y[3,:],color=:green)
+# # Test
+# Plots.scatter(1,title="TEST DATASET",
+#             xlabel="X1",ylabel="X2",zlabel="X3",
+#             camera=(30,45),legend=false)
+# Plots.@gif for i in range(1,stop=size(xtest,1),length=size(xtest,1))
+#     y = W*xtest[Int(i),:];
+#     Plots.scatter!(y[1,:],y[2,:],y[3,:],color=:green)
+# end
+
+
+# generate new points(outside the plane)
+a , b , d , e = -3 , 16 , -4 , 5;
+n_samples = 400
+X = zeros(Float64,n_samples,3); # Save data in X
+for i in 1:n_samples
+    X[i,:] = Generate_data(a,b,d,e);
 end
+
+
