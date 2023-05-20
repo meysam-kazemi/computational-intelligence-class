@@ -37,7 +37,7 @@ function generate_population(num_cities, population_size)
     population = []
     for _ in 1:population_size
         path = collect(1:num_cities)
-        Random.shuffle!(path)
+        path[2:end] = Random.shuffle!(path[2:end])
         push!(population, path)
     end
     return population
