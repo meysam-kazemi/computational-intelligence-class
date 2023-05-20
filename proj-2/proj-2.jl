@@ -1,5 +1,6 @@
 using Random
 using LinearAlgebra
+using Plots
 
 # Define the number of cities and the population size
 const NUM_CITIES = 20
@@ -101,3 +102,6 @@ best_path, best_distance = genetic_algorithm()
 # Print the best path and distance
 println("Best path: ", best_path)
 println("Best distance: ", best_distance)
+
+scatter(points[:,1],points[:,2],points[:,3],color=:yellow)
+
