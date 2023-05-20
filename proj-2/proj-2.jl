@@ -2,6 +2,9 @@ using Random
 using LinearAlgebra
 using Plots
 
+# Set seed
+Random.seed!(123)
+
 # Define the number of cities and the population size
 const NUM_CITIES = 20
 const POPULATION_SIZE = 100
@@ -103,6 +106,6 @@ best_path, best_distance = genetic_algorithm()
 println("Best path: ", best_path)
 println("Best distance: ", best_distance)
 
-scatter(points[:,1],points[:,2],points[:,3],color=:yellow,camera=(10,10))
+scatter(points[:,1],points[:,2],points[:,3],color=:yellow,camera=(20,20))
 plots_path = points[best_path,:]
 plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3])
