@@ -14,7 +14,9 @@ const MAX_GENERATIONS = 500
 const MUTATION_RATE = 0.02
 
 # Define the coordinates of the 3D points
-points = rand(NUM_CITIES, 3)
+points = [0 0 0]
+points = [points ; rand(0:5,NUM_CITIES-1, 3)]
+
 
 # Calculate the distance between two points
 function distance(point1, point2)
