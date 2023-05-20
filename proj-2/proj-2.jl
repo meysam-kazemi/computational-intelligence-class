@@ -10,7 +10,7 @@ const NUM_CITIES = 20
 const POPULATION_SIZE = 100
 
 # Define the maximum number of generations and the mutation rate
-const MAX_GENERATIONS = 500
+const MAX_GENERATIONS = 1000
 const MUTATION_RATE = 0.02
 
 # Define the coordinates of the 3D points
@@ -92,6 +92,7 @@ function genetic_algorithm()
             parent1, parent2 = tournament_selection(population)
             child = ordered_crossover(parent1, parent2)
             mutated_child = mutate(child)
+            
             push!(new_population, mutated_child)
         end
         population = new_population
@@ -109,6 +110,7 @@ best_path, best_distance = genetic_algorithm()
 println("Best path: ", best_path)
 println("Best distance: ", best_distance)
 
+theme(:default)
 scatter(points[:,1],points[:,2],points[:,3],color=:red,
     camera=(20,20),markerstrokewidth=0)
 plots_path = points[best_path,:]
