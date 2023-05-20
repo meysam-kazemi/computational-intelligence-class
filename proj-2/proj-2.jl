@@ -24,6 +24,21 @@ function distance(point1, point2)
     return norm(point1 - point2)
 end
 
+# Convert population to path
+function population_path(population)
+    paths = []
+    for i in 1:length(population)
+        path = []
+        p = population[i]
+        for j in p
+            append!(path,findfirst(j .== GENS))
+        end
+        push!(paths,path)
+    end
+    return paths
+end
+
+
 # Calculate the total distance of a path
 function total_distance(path)
     total = 0.0
@@ -33,9 +48,6 @@ function total_distance(path)
     total += distance(points[path[1], :], points[path[length(path)], :])
     return total
 end
-
-
-
 
 # Generate an initial population
 function generate_population(population_size)
