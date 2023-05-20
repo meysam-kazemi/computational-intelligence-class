@@ -8,6 +8,7 @@ Random.seed!(123)
 # Define the number of cities and the population size
 const NUM_CITIES = 20
 const POPULATION_SIZE = 100
+const GENS = split("abcdefghigklmnopqrst","")
 
 # Define the maximum number of generations and the mutation rate
 const MAX_GENERATIONS = 1000
@@ -33,13 +34,15 @@ function total_distance(path)
     return total
 end
 
+
+
+
 # Generate an initial population
-function generate_population(num_cities, population_size)
+function generate_population(population_size)
     population = []
     for _ in 1:population_size
-        path = collect(1:num_cities)
-        path[2:end] = Random.shuffle!(path[2:end])
-        push!(population, path)
+        gen = shuffle(GENS)
+        push!(population, gen)
     end
     return population
 end
@@ -48,8 +51,9 @@ end
 function tournament_selection(population, k=3)
     selected = []
     for _ in 1:2
-        participants = randperm(length(population))[1:k]
-        push!(selected, population[argmin([total_distance(population[p]) for p in participants])])
+        @show participants = randperm(length(population))[1:k]
+        participants = population[participants]
+        push!(selected, population[argmin([total_distance(p) for p in participants])])
     end
     return selected
 end
