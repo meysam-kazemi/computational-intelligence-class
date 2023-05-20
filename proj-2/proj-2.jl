@@ -74,20 +74,10 @@ end
 
 # Perform ordered crossover
 function ordered_crossover(parent1, parent2)
-    start, stop = sort(randperm(NUM_CITIES)[1:2])
+    section = rand(1:NUM_CITIES)
     child = fill("", NUM_CITIES)
-    child[start:stop] = parent1[start:stop]
-
-    idx = 1
-    for i in 1:NUM_CITIES
-        if child[i] == ""
-            while parent2[idx] in child && idx < length(parent2)
-                idx += 1
-            end
-            child[i] = parent2[idx]
-        end
-    end
-    child[1] = parent1[1]
+    child[1:section] = parent1[1:section]
+    child[section+1:end] = parent2[section+1:end]
     return child
 end
 
