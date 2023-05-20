@@ -27,20 +27,12 @@ end
 # Convert population to path
 function population_path(population)
     paths = []
-    len = length(population)
-    if len == 1
-        paths = []
-        for p in population
-            append!(paths,findfirst(p .== GENS))
+    for i in 1:length(population)
+        path = []
+        for p in population[i]
+            append!(path,findfirst(p .== GENS))
         end
-    else
-        for i in 1:len
-            path = []
-            for p in population[i]
-                append!(path,findfirst(p .== GENS))
-            end
-            push!(paths,path)
-        end
+        push!(paths,path)
     end
     return paths
 end
@@ -96,7 +88,7 @@ function ordered_crossover(parent1, parent2)
         end
     end
     child[1] = parent1[1]
-    return population_path([child])
+    return child
 end
 
 # Perform mutation by swapping two cities
@@ -119,15 +111,14 @@ function genetic_algorithm()
         while length(new_population) < POPULATION_SIZE
             parent1, parent2 = tournament_selection(population)
             child = ordered_crossover(parent1, parent2)
-            println("child___:      $(child)",length(child))
-            mutated_child = mutate(child)
-            
+            child_path = population_path([child])
+            mutated_child = mutate(child_path[1])
             push!(new_population, mutated_child)
         end
         population = new_population
     end
-
-    best_path = population[argmin([total_distance(p) for p in population])]
+    paths = population_path(population)
+    best_path = paths[argmin([total_distance(p) for p in paths])]
     best_distance = total_distance(best_path)
     print("\n")
     return best_path, best_distance
