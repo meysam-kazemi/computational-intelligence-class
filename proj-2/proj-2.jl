@@ -116,9 +116,9 @@ println("Best distance: ", best_distance)
 theme(:default)
 scatter(points[:,1],points[:,2],points[:,3],color=:red,
     camera=(20,20),markerstrokewidth=0,xlabel="x",
-    ylabel="y",zlabel="z")
+    ylabel="y",zlabel="z",legend=false)
 plots_path = points[best_path,:]
 plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3],linestyle=:dash,
     linewidth=1)
-plot!(points[best_path[1],1,:],points[best_path[1],2,:],points[best_path[1],3,:],color=:blue)
+scatter!(points[best_path[1],1,:],points[best_path[1],2,:],points[best_path[1],3,:],color=:blue)
 title!("Project - 2")
