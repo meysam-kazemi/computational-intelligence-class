@@ -29,6 +29,7 @@ function total_distance(path)
     for i in 1:length(path) - 1
         total += distance(points[path[i], :], points[path[i + 1], :])
     end
+    total += distance(points[path[1], :], points[path[length(path)], :])
     return total
 end
 
