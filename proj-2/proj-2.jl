@@ -103,5 +103,6 @@ best_path, best_distance = genetic_algorithm()
 println("Best path: ", best_path)
 println("Best distance: ", best_distance)
 
-scatter(points[:,1],points[:,2],points[:,3],color=:yellow)
-
+scatter(points[:,1],points[:,2],points[:,3],color=:yellow,camera=(10,10))
+plots_path = points[best_path,:]
+plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3])
