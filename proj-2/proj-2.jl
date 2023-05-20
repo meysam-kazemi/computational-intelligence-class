@@ -109,6 +109,9 @@ best_path, best_distance = genetic_algorithm()
 println("Best path: ", best_path)
 println("Best distance: ", best_distance)
 
-scatter(points[:,1],points[:,2],points[:,3],color=:yellow,camera=(20,20))
+scatter(points[:,1],points[:,2],points[:,3],color=:red,
+    camera=(20,20),markerstrokewidth=0)
 plots_path = points[best_path,:]
-plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3])
+plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3],linestyle=:dash,
+    linewidth=1)
+title!("Project - 2")
