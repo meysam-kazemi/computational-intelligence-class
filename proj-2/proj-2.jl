@@ -8,7 +8,7 @@ Random.seed!(123)
 # Define the number of cities and the population size
 const NUM_CITIES = 20
 const POPULATION_SIZE = 100
-const GENS = split("abcdefghigklmnopqrst","")
+const GENS = split("abcdefghijklmnopqrstuvwxyz","")[1:NUM_CITIES]
 
 # Define the maximum number of generations and the mutation rate
 const MAX_GENERATIONS = 1000
@@ -27,13 +27,20 @@ end
 # Convert population to path
 function population_path(population)
     paths = []
-    for i in 1:length(population)
-        path = []
-        p = population[i]
-        for j in p
-            append!(path,findfirst(j .== GENS))
+    len = length(population)
+    if len == 1
+        paths = []
+        for p in population
+            append!(paths,findfirst(p .== GENS))
         end
-        push!(paths,path)
+    else
+        for i in 1:len
+            path = []
+            for p in population[i]
+                append!(path,findfirst(p .== GENS))
+            end
+            push!(paths,path)
+        end
     end
     return paths
 end
@@ -53,7 +60,9 @@ end
 function generate_population(population_size)
     population = []
     for _ in 1:population_size
-        gen = shuffle(GENS)
+        gen = fill("",NUM_CITIES)
+        gen[1] = GENS[1]
+        gen[2:end] = shuffle(GENS[2:end])
         push!(population, gen)
     end
     return population
@@ -63,9 +72,10 @@ end
 function tournament_selection(population, k=3)
     selected = []
     for _ in 1:2
-        @show participants = randperm(length(population))[1:k]
-        participants = population[participants]
-        push!(selected, population[argmin([total_distance(p) for p in participants])])
+        participants = randperm(length(population))[1:k]
+        populations = population[participants]
+        paths = population_path(populations)
+        push!(selected, population[argmin([total_distance(p) for p in paths])])
     end
     return selected
 end
@@ -73,12 +83,12 @@ end
 # Perform ordered crossover
 function ordered_crossover(parent1, parent2)
     start, stop = sort(randperm(NUM_CITIES)[1:2])
-    child = fill(-1, NUM_CITIES)
+    child = fill("", NUM_CITIES)
     child[start:stop] = parent1[start:stop]
 
     idx = 1
     for i in 1:NUM_CITIES
-        if child[i] == -1
+        if child[i] == ""
             while parent2[idx] in child && idx < length(parent2)
                 idx += 1
             end
@@ -86,7 +96,7 @@ function ordered_crossover(parent1, parent2)
         end
     end
     child[1] = parent1[1]
-    return child
+    return population_path([child])
 end
 
 # Perform mutation by swapping two cities
@@ -96,12 +106,12 @@ function mutate(path)
         path[idx1], path[idx2] = path[idx2], path[idx1]
     end
     path[1] = 1
-    return path
+    return GENS[path]
 end
 
 # Genetic algorithm
 function genetic_algorithm()
-    population = generate_population(NUM_CITIES, POPULATION_SIZE)
+    population = generate_population(POPULATION_SIZE)
 
     for i in 1:MAX_GENERATIONS
         print("\r $(Int(round(100i/MAX_GENERATIONS))) %")
@@ -109,6 +119,7 @@ function genetic_algorithm()
         while length(new_population) < POPULATION_SIZE
             parent1, parent2 = tournament_selection(population)
             child = ordered_crossover(parent1, parent2)
+            println("child___:      $(child)",length(child))
             mutated_child = mutate(child)
             
             push!(new_population, mutated_child)
