@@ -78,13 +78,18 @@ function ordered_crossover(parent1, parent2)
     child = fill("", NUM_CITIES)
     child[1:section] = parent1[1:section]
 
-    indexes = findall(x->x.==0,child)
-    idx = 1
-    for i in 1:length(b)
+    idx = section + 1
+    for i in parent2
+        test = false
         global idx
-        if parent2[i] ∉ child
-            child[indexes[idx]] = parent2[i]
+        if i ∉ child # && idx <= NUM_CITIES
+            child[idx] = i
             idx = idx+1
+            println("idx :  ",idx)
+            test = true
+        end
+        if test
+            println(i)
         end
     end
 
@@ -111,6 +116,8 @@ function genetic_algorithm()
         while length(new_population) < POPULATION_SIZE
             parent1, parent2 = tournament_selection(population)
             child = ordered_crossover(parent1, parent2)
+            println(child)
+
             child_path = population_path([child])
             mutated_child = mutate(child_path[1])
             push!(new_population, mutated_child)
@@ -140,3 +147,4 @@ plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3],linestyle=:dash,
     linewidth=1)
 scatter!(points[best_path[1],1,:],points[best_path[1],2,:],points[best_path[1],3,:],color=:blue)
 title!("Project - 2")
+
