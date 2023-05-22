@@ -79,34 +79,6 @@ function ordered_crossover(parent1, parent2)
 
     child2 = [item for item in parent2 if item ∉ child1]
     child = append!(child1,child2)
-    # if length(child) != 20 && test
-    #     println("++++++++++++++")
-    #     println(child,length(child))
-    #     println(child1,child1|> length)
-    #     println(child2,child2|>length)
-    #     println(section)
-    #     println(parent2,length(parent2))
-    #     println(parent1,length(parent1))
-    #     println(parent1==parent2)
-    #     println("++++++++++++++")
-    #     global test = false
-    # end
-
-    # idx = section + 1
-    # for i in parent2
-    #     test = false
-    #     global idx
-    #     if i ∉ child # && idx <= NUM_CITIES
-    #         child[idx] = i
-    #         idx = idx+1
-    #         println("idx :  ",idx)
-    #         test = true
-    #     end
-    #     if test
-    #         println(i)
-    #     end
-    # end
-
     return child
 end
 
