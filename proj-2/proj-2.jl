@@ -52,10 +52,10 @@ end
 function generate_population(population_size)
     population = []
     for _ in 1:population_size
-        gen = fill("",NUM_CITIES)
-        gen[1] = GENS[1]
-        gen[2:end] = shuffle(GENS[2:end])
-        push!(population, gen)
+        chromosome = fill("",NUM_CITIES)
+        chromosome[1] = GENS[1]
+        chromosome[2:end] = shuffle(GENS[2:end])
+        push!(population, chromosome)
     end
     return population
 end
@@ -77,7 +77,17 @@ function ordered_crossover(parent1, parent2)
     section = rand(1:NUM_CITIES)
     child = fill("", NUM_CITIES)
     child[1:section] = parent1[1:section]
-    child[section+1:end] = parent2[section+1:end]
+
+    indexes = findall(x->x.==0,child)
+    idx = 1
+    for i in 1:length(b)
+        global idx
+        if parent2[i] ∉ child
+            child[indexes[idx]] = parent2[i]
+            idx = idx+1
+        end
+    end
+
     return child
 end
 
