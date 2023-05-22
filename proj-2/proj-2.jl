@@ -64,7 +64,7 @@ end
 function tournament_selection(population, k=3)
     selected = []
     for _ in 1:2
-        participants = randperm(length(population))[1:k]
+        participants = rand(1:NUM_CITIES,k)
         populations = population[participants]
         paths = population_path(populations)
         push!(selected, population[argmin([total_distance(p) for p in paths])])
@@ -74,24 +74,38 @@ end
 
 # Perform ordered crossover
 function ordered_crossover(parent1, parent2)
-    section = rand(1:NUM_CITIES)
-    child = fill("", NUM_CITIES)
-    child[1:section] = parent1[1:section]
+    section = 10
+    child1 = parent1[1:section]
 
-    idx = section + 1
-    for i in parent2
-        test = false
-        global idx
-        if i ∉ child # && idx <= NUM_CITIES
-            child[idx] = i
-            idx = idx+1
-            println("idx :  ",idx)
-            test = true
-        end
-        if test
-            println(i)
-        end
-    end
+    child2 = [item for item in parent2 if item ∉ child1]
+    child = append!(child1,child2)
+    # if length(child) != 20 && test
+    #     println("++++++++++++++")
+    #     println(child,length(child))
+    #     println(child1,child1|> length)
+    #     println(child2,child2|>length)
+    #     println(section)
+    #     println(parent2,length(parent2))
+    #     println(parent1,length(parent1))
+    #     println(parent1==parent2)
+    #     println("++++++++++++++")
+    #     global test = false
+    # end
+
+    # idx = section + 1
+    # for i in parent2
+    #     test = false
+    #     global idx
+    #     if i ∉ child # && idx <= NUM_CITIES
+    #         child[idx] = i
+    #         idx = idx+1
+    #         println("idx :  ",idx)
+    #         test = true
+    #     end
+    #     if test
+    #         println(i)
+    #     end
+    # end
 
     return child
 end
@@ -99,25 +113,21 @@ end
 # Perform mutation by swapping two cities
 function mutate(path)
     if rand() < MUTATION_RATE
-        idx1, idx2 = sort(randperm(NUM_CITIES)[1:2])
+        idx1, idx2 = sort(rand(2:NUM_CITIES,2))
         path[idx1], path[idx2] = path[idx2], path[idx1]
     end
-    path[1] = 1
     return GENS[path]
 end
 
 # Genetic algorithm
 function genetic_algorithm()
     population = generate_population(POPULATION_SIZE)
-
     for i in 1:MAX_GENERATIONS
         print("\r $(Int(round(100i/MAX_GENERATIONS))) %")
         new_population = []
         while length(new_population) < POPULATION_SIZE
             parent1, parent2 = tournament_selection(population)
             child = ordered_crossover(parent1, parent2)
-            println(child)
-
             child_path = population_path([child])
             mutated_child = mutate(child_path[1])
             push!(new_population, mutated_child)
