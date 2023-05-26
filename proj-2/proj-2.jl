@@ -91,6 +91,16 @@ function mutate(path)
     return GENS[path]
 end
 
+function plotting(best_path,text)
+    scatter(points[:,1],points[:,2],points[:,3],color=:red,
+        camera=(20,20),markerstrokewidth=0,xlabel="x",
+        ylabel="y",zlabel="z",legend=false,title=text)
+    plots_path = points[best_path,:]
+    plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3],linestyle=:dash,
+        linewidth=1)
+end
+
+
 # Genetic algorithm
 function genetic_algorithm()
     population = generate_population(POPULATION_SIZE)
@@ -105,6 +115,10 @@ function genetic_algorithm()
             push!(new_population, mutated_child)
         end
         population = new_population
+        if i in [1,100,500,MAX_GENERATIONS]
+            paths = population_path(population)
+            best_path = paths[argmin([total_distance(p) for p in paths])]
+        end
     end
     paths = population_path(population)
     best_path = paths[argmin([total_distance(p) for p in paths])]
