@@ -118,6 +118,7 @@ function genetic_algorithm()
         if i in [1,100,500,MAX_GENERATIONS]
             paths = population_path(population)
             best_path = paths[argmin([total_distance(p) for p in paths])]
+            plotting(best_path,"epoch $i ")
         end
     end
     paths = population_path(population)
@@ -134,13 +135,5 @@ best_path, best_distance = genetic_algorithm()
 println("Best path: ", best_path)
 println("Best distance: ", best_distance)
 
-theme(:default)
-scatter(points[:,1],points[:,2],points[:,3],color=:red,
-    camera=(20,20),markerstrokewidth=0,xlabel="x",
-    ylabel="y",zlabel="z",legend=false)
-plots_path = points[best_path,:]
-plot!(plots_path[:,1],plots_path[:,2],plots_path[:,3],linestyle=:dash,
-    linewidth=1)
-scatter!(points[best_path[1],1,:],points[best_path[1],2,:],points[best_path[1],3,:],color=:blue)
-title!("Project - 2")
+
 
