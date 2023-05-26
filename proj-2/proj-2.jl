@@ -141,7 +141,7 @@ println("Best distance: ", best_distance)
 
 for i in [1,100,500,1000]
     plotting(best_paths[i],"epoch $i : $(total_distance(best_paths[i]))")
-    savefig("$i.png")
+    savefig("proj-2/$i.png")
 end
 
 
