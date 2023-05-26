@@ -103,6 +103,7 @@ end
 
 # Genetic algorithm
 function genetic_algorithm()
+    best_path_epochs = Dict()
     population = generate_population(POPULATION_SIZE)
     for i in 1:MAX_GENERATIONS
         print("\r $(Int(round(100i/MAX_GENERATIONS))) %")
@@ -118,18 +119,20 @@ function genetic_algorithm()
         if i in [1,100,500,MAX_GENERATIONS]
             paths = population_path(population)
             best_path = paths[argmin([total_distance(p) for p in paths])]
-            plotting(best_path,"epoch $i ")
+            best_path_epochs[i] = best_path
         end
     end
-    paths = population_path(population)
-    best_path = paths[argmin([total_distance(p) for p in paths])]
-    best_distance = total_distance(best_path)
     print("\n")
-    return best_path, best_distance
+    return best_path_epochs
 end
 
+
+
+# total_distance(best_path)
+
+
 # Run the genetic algorithm
-best_path, best_distance = genetic_algorithm()
+best_paths = genetic_algorithm()
 
 # Print the best path and distance
 println("Best path: ", best_path)
