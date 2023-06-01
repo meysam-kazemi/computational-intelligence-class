@@ -12,10 +12,10 @@ const W = 0.001*rand(OUTPUT,INPUT);
 # Activation function -> Unit step function
 unit_step(x) = @. x >= 0 ? 1 : 0 # If it was smaller than 0, return 0 and otherwise 1
 # Generate Data
-X = [0 0;0 1;1 0;1 1];
-Y_or = [0;1;1;1];
-Y_and = [0;0;01];
-Y_xor = [0;1;1;0];
+X = [0.0 0.0;0.0 1.0;1.0 0.0;1.0 1.0];
+Y_or = [0.0;1.0;1.0;1.0];
+Y_and = [0.0;0.0;0.0;1.0];
+Y_xor = [0.0;1.0;1.0;0.0];
 # Layer of neural network
 function layer(x)
     output_ = zeros(size(x,1))
