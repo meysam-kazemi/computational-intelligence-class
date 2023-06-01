@@ -1,10 +1,14 @@
+using Statistics
 # Define the number of inputs and outputs.
-INPUT = 2;
-OUTPUT = 3;
-# Define epochs
-EPOCHS = 100;
+const INPUT = 2;
+const OUTPUT = 3;
+# Define epochs and laerning rate
+const EPOCHS = 100;
+const LR = 0.001;
+# Weights
+global W = 0.001*rand(OUTPUT,INPUT);
 # Activation function -> Unit step function
-unit_step(x) = @. x >= 0 ? 1 : 0
+unit_step(x) = @. x >= 0 ? 1 : 0 # If it was smaller than 0, return 0 and otherwise 1
 # Generate Data
 X = [0 0;0 1;1 0;1 1];
 Y_or = [0;1;1;1];
