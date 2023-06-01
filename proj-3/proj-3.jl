@@ -1,4 +1,6 @@
+# Import libraries
 using Statistics
+using Plots
 # Define the number of inputs and outputs.
 const INPUT = 2;
 const OUTPUT = 3;
