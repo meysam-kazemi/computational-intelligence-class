@@ -5,7 +5,7 @@ using Plots
 const INPUT = 2;
 const OUTPUT = 3;
 # Define epochs and laerning rate
-const EPOCHS = 100;
+const EPOCHS = 100000;
 const LR = 0.01;
 # Weights
 global W = 0.001*rand(OUTPUT,INPUT);
@@ -32,4 +32,13 @@ function update(x,y)
     W = W .+ LR .* (y * x);
 end
 
-
+# Train
+for epoch in EPOCHS
+    print("\r $(Int(round(100epoch/EPOCHS))) %")
+    for i in size(X,1)
+        x = X[i,:]';
+        y = Y[i,:];
+        update(x,y);
+    end
+end
+print("\n")
