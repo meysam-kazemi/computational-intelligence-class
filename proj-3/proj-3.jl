@@ -6,7 +6,7 @@ const INPUT = 2;
 const OUTPUT = 3;
 # Define epochs and laerning rate
 const EPOCHS = 100;
-const LR = 0.001;
+const LR = 0.01;
 # Weights
 global W = 0.001*rand(OUTPUT,INPUT);
 global bias = 0;
@@ -29,8 +29,7 @@ end
 # Update the Weights
 function update(x,y)
     global W,bias
-    
+    W = W .+ LR .* (y * x);
 end
 
-update(X,Y)
 
