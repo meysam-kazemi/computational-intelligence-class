@@ -42,3 +42,9 @@ for epoch in EPOCHS
     end
 end
 print("\n")
+
+# Test model
+predict = []
+for i in size(X,1)
+    push!(predict,W*X[i,:])
+end
