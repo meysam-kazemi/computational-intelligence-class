@@ -14,6 +14,13 @@ X = [0 0;0 1;1 0;1 1];
 Y_or = [0;1;1;1];
 Y_and = [0;0;01];
 Y_xor = [0;1;1;0];
-
+# Layer of neural network
+function layer(x)
+    output_ = zeros(size(x,1))
+    for (i,row) in enumerate(eachrow(x))
+        output_[i] = W * hcat(row);
+    end
+    return output_
+end
 
 
