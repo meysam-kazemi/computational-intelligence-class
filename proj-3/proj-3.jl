@@ -18,11 +18,13 @@ Y_and = [0.0;0.0;0.0;1.0];
 Y_xor = [0.0;1.0;1.0;0.0];
 # Layer of neural network
 function layer(x)
-    output_ = zeros(size(x,1))
-    for (i,row) in enumerate(eachrow(x))
-        output_[i] = W * hcat(row);
+    output_ = []
+    for row in eachrow(x)
+       push!(output_,W * hcat(row));
     end
     return output_
 end
+
+a = layer(X)
 
 
