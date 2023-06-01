@@ -36,9 +36,9 @@ end
 for epoch in EPOCHS
     print("\r $(Int(round(100epoch/EPOCHS))) %")
     for i in size(X,1)
-        x = X[i,:]';
-        y = Y[i,:];
-        update(x,y);
+        x = X[i,:];
+        predict = W * x;
+        update(x',predict);
     end
 end
 print("\n")
