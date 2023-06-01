@@ -6,7 +6,7 @@ const OUTPUT = 3;
 const EPOCHS = 100;
 const LR = 0.001;
 # Weights
-global W = 0.001*rand(OUTPUT,INPUT);
+const W = 0.001*rand(OUTPUT,INPUT);
 # Activation function -> Unit step function
 unit_step(x) = @. x >= 0 ? 1 : 0 # If it was smaller than 0, return 0 and otherwise 1
 # Generate Data
