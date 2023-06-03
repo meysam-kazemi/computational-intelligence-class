@@ -37,10 +37,9 @@ end
 # Train
 for epoch in EPOCHS
     print("\r $(Int(round(100epoch/EPOCHS))) %")
+    ŷ = layer(X,unit_step);
     for i in size(X,1)
-        x = X[i,:];
-        predict = W * x;
-        update(x',predict);
+        update(X[i,:]',ŷ[i])
     end
 end
 print("\n")
