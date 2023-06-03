@@ -11,7 +11,7 @@ const LR = 0.01;
 global W = 0.001*rand(OUTPUT,INPUT);
 global bias = 0;
 # Activation function -> Unit step function
-unit_step(x) = @. x >= 0 ? 1 : 0 # If it was smaller than 0, return 0 and otherwise 1
+unit_step(x) = x .>= 0; # If it was smaller than 0, return 0 and otherwise 1
 # Generate Data
 X = [0.0 0.0;0.0 1.0;1.0 0.0;1.0 1.0];
 Y_or = [0.0;1.0;1.0;1.0];
@@ -19,10 +19,12 @@ Y_and = [0.0;0.0;0.0;1.0];
 Y_xor = [0.0;1.0;1.0;0.0];
 Y = [Y_or Y_and Y_xor]
 # Layer of neural network
-function layer(x)
+function layer(x,activation)
     output_ = []
     for row in eachrow(x)
-       push!(output_,W * hcat(row));
+        y = W * hcat(row);
+        res = activation(y);
+        push!(output_,res);
     end
     return output_
 end
@@ -44,7 +46,4 @@ end
 print("\n")
 
 # Test model
-predict = []
-for i in size(X,1)
-    push!(predict,W*X[i,:])
-end
+layer(X)
