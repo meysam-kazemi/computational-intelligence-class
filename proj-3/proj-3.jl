@@ -1,48 +1,72 @@
-# Import libraries
-using Statistics
-using Plots
-# Define the number of inputs and outputs.
-const INPUT = 2;
-const OUTPUT = 3;
-# Define epochs and laerning rate
-const EPOCHS = 100000;
-const LR = 0.01;
-# Weights
-global W = 0.001*rand(OUTPUT,INPUT);
-global bias = 0;
-# Activation function -> Unit step function
-unit_step(x) = x .>= 0; # If it was smaller than 0, return 0 and otherwise 1
-# Generate Data
-X = [0.0 0.0;0.0 1.0;1.0 0.0;1.0 1.0];
-Y_or = [0.0;1.0;1.0;1.0];
-Y_and = [0.0;0.0;0.0;1.0];
-Y_xor = [0.0;1.0;1.0;0.0];
-Y = [Y_or Y_and Y_xor]
-# Layer of neural network
-function layer(x,activation)
-    output_ = []
-    for row in eachrow(x)
-        y = W * hcat(row);
-        res = activation(y);
-        push!(output_,res);
-    end
-    return output_
-end
-# Update the Weights
-function update(x,y)
-    global W,bias
-    W = W .+ LR .* (y * x);
+using Random
+import LinearAlgebra.dot
+
+# Define the activation function (step function)
+activate(x) = x .>= 0;
+
+# Define the single-layer perceptron network
+mutable struct MultiOutputPerceptron
+    weights::Matrix{Float64}
+    bias::Vector{Float64}
 end
 
-# Train
-for epoch in EPOCHS
-    print("\r $(Int(round(100epoch/EPOCHS))) %")
-    ŷ = layer(X,unit_step);
-    for i in size(X,1)
-        update(X[i,:]',ŷ[i])
-    end
+function MultiOutputPerceptron(input_size::Int, output_size::Int)
+    # Randomly initialize weights and bias
+    weights = rand(output_size, input_size)
+    bias = rand(output_size)
+    return MultiOutputPerceptron(weights, bias)
 end
-print("\n")
 
-# Test model
-layer(X)
+function predict(perceptron::MultiOutputPerceptron, inputs)
+    # Perform the weighted sum of inputs and apply the activation function
+    weighted_sum = perceptron.weights * inputs .+ perceptron.bias
+    return activate.(weighted_sum)
+end
+
+function train_gates(input_data, output_data)
+    # Create a perceptron for all gates
+    perceptron = MultiOutputPerceptron(size(input_data, 2), size(output_data, 2))
+
+    # Train the perceptron
+    for epoch in 1:1000
+        for i in 1:size(input_data, 1)
+            inputs = input_data[i, :]
+            expected_output = output_data[i, :]
+
+            # Compute the predicted output
+            predicted_output = predict(perceptron, inputs)
+
+            # Update weights and bias based on prediction error
+            error = expected_output - predicted_output
+            perceptron.weights .+= 0.1 .* (error * inputs')
+            perceptron.bias .+= 0.1 .* error
+        end
+    end
+
+    # Test the trained perceptron
+    println("OR, AND, XOR Gates:")
+    for i in 1:size(input_data, 1)
+        inputs = input_data[i, :]
+        predicted_output = predict(perceptron, inputs)
+        println("$inputs -> $predicted_output")
+    end
+    println()
+end
+
+# Define the input and output data for the gates
+input_data = [
+    0.0 0.0;
+    0.0 1.0;
+    1.0 0.0;
+    1.0 1.0
+]
+
+output_data = [
+    0.0 0.0 0.0;
+    1.0 0.0 1.0;
+    1.0 0.0 1.0;
+    1.0 1.0 0.0
+]
+
+# Train and test all gates
+train_gates(input_data, output_data)
