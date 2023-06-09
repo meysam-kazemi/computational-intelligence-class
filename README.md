@@ -1,7 +1,7 @@
 # computational-intelligence-class
 In this repository, I have completed the projects of the computational intelligence course.
 
-Projects:
+## Projects:
 
 **Project 1** : Investigating the behavior of the simple model with respect to data that is different from the training data.
 
