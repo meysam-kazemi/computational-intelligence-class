@@ -1,5 +1,5 @@
 # computational-intelligence-class
-- In this repository, I have completed the projects of the computational intelligence course.
+In this repository, I have completed the projects of the computational intelligence course.
 
 ## Projects:
 
